@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cloud_adventures</title>
+    <link>https://colonmelvin.github.io/</link>
+    <description>Recent content on cloud_adventures</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>colon.melvin@gmail.com (Colon Melvin)</managingEditor>
+    <webMaster>colon.melvin@gmail.com (Colon Melvin)</webMaster>
+    <lastBuildDate>Wed, 24 Jun 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://colonmelvin.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>First post!</title>
+      <link>https://colonmelvin.github.io/post/2020-06-24-first-post/</link>
+      <pubDate>Wed, 24 Jun 2020 00:00:00 +0000</pubDate>
+      <author>colon.melvin@gmail.com (Colon Melvin)</author>
+      <guid>https://colonmelvin.github.io/post/2020-06-24-first-post/</guid>
+      <description>Let&amp;rsquo;s see how codeblocks look in this first post. Below is a block I&amp;rsquo;ve used in the past to elevate interactive PowerShell scripts.
+# Elevate to admin If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] &amp;#34;Administrator&amp;#34;)) { #&amp;#34;No Administrative rights, it will display a popup window asking user for Admin rights&amp;#34; $arguments = &amp;#34;&amp;amp; &amp;#39;&amp;#34; + $myinvocation.mycommand.definition + &amp;#34;&amp;#39;&amp;#34; Start-Process &amp;#34;$psHome\powershell.exe&amp;#34; -Verb runAs -ArgumentList $arguments set-executionpolicy -scope CurrentUser -executionPolicy Bypass break } # code here </description>
+    </item>
+    
+    <item>
+      <title>About me</title>
+      <link>https://colonmelvin.github.io/page/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>colon.melvin@gmail.com (Colon Melvin)</author>
+      <guid>https://colonmelvin.github.io/page/about/</guid>
+      <description>Hi there! This blog is focused on cloud architecture, migrations, and automation. I&amp;rsquo;ll be sharing what I&amp;rsquo;m learning with Python, PowerShell, Terraform, and a few other adventures. Thanks for stopping by!
+My Background From building a dial-up ISP in the year 2000, from tech support, senior systems engineer, to cloud architect! I&amp;rsquo;ve worn many of the IT hats over the years and have a deep appreciation for using technology to improve the world around us.</description>
+    </item>
+    
+  </channel>
+</rss>
