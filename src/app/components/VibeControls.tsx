@@ -4,7 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useVibeStore, VibePreset } from '@/lib/vibe-store';
 import { audioManager } from '@/lib/audio-manager';
 
-export default function VibeControls() {
+interface VibeControlsProps {
+  showTrigger?: boolean;
+}
+
+export default function VibeControls({ showTrigger = true }: VibeControlsProps) {
   const {
     ambiance,
     colorHue,
@@ -33,22 +37,24 @@ export default function VibeControls() {
 
   return (
     <>
-      {/* Toggle Button */}
-      <motion.button
-        className="relative z-50 p-3 rounded-full glass-effect focus-ring"
-        onClick={togglePanel}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        style={{ borderColor: 'var(--color-primary)' }}
-      >
-        <motion.span
-          className="text-2xl"
-          animate={{ rotate: isPanelOpen ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
+      {/* Toggle Button - Only show if showTrigger is true */}
+      {showTrigger && (
+        <motion.button
+          className="relative z-50 p-3 rounded-full glass-effect focus-ring"
+          onClick={togglePanel}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          style={{ borderColor: 'var(--color-primary)' }}
         >
-          🎛️
-        </motion.span>
-      </motion.button>
+          <motion.span
+            className="text-2xl"
+            animate={{ rotate: isPanelOpen ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            🎛️
+          </motion.span>
+        </motion.button>
+      )}
 
       {/* Control Panel */}
       <AnimatePresence>

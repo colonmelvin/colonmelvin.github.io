@@ -100,9 +100,9 @@ export default function Home() {
             </motion.div>
           </motion.button>
 
-          {/* Hidden VibeControls Panel */}
+          {/* Hidden VibeControls Panel - no trigger button */}
           <ClientOnly>
-            <VibeControls />
+            <VibeControls showTrigger={false} />
           </ClientOnly>
         </motion.header>
 
@@ -217,32 +217,24 @@ export default function Home() {
                   </motion.div>
                 </motion.div>
 
-                {/* Cursor hint */}
+                {/* Vibe controls hint - better readability */}
                 <motion.div
-                  className="text-sm opacity-60 flex items-center gap-2"
-                  style={{ color: 'var(--text-muted)' }}
-                  animate={{ opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <span>Move your cursor around</span>
-                  <motion.span
-                    animate={{ rotate: [0, 20, -20, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    ✨
-                  </motion.span>
-                </motion.div>
-
-                {/* Subtle hint about vibe controls */}
-                <motion.div
-                  className="text-xs opacity-40 text-center"
-                  style={{ color: 'var(--text-muted)' }}
+                  className="text-sm opacity-70 text-center"
+                  style={{ color: 'var(--text-secondary)' }}
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.4 }}
-                  transition={{ delay: 2 }}
+                  animate={{ opacity: 0.7 }}
+                  transition={{ delay: 1.5 }}
                 >
                   <span>Click the </span>
-                  <span className="font-mono">🎛️</span>
+                  <span 
+                    className="inline-flex items-center px-2 py-1 rounded text-xs font-medium"
+                    style={{ 
+                      backgroundColor: 'rgba(var(--color-primary-rgb), 0.1)',
+                      color: 'var(--color-primary)'
+                    }}
+                  >
+                    🎛️
+                  </span>
                   <span> in the top-right to customize your vibe</span>
                 </motion.div>
               </motion.div>
