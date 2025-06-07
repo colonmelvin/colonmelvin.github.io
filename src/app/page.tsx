@@ -1,103 +1,222 @@
-import Image from "next/image";
+'use client';
+
+import { motion } from 'framer-motion';
+import { useVibeStore } from '@/lib/vibe-store';
+import VibeControls from './components/VibeControls';
+import CursorEffects from './components/CursorEffects';
+import CodeDisplay from './components/CodeDisplay';
+import ClientOnly from './components/ClientOnly';
+import VibeInitializer from './components/VibeInitializer';
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Initialize vibe settings */}
+      <ClientOnly>
+        <VibeInitializer />
+      </ClientOnly>
+      
+      {/* Cursor Effects - Client Only */}
+      <ClientOnly>
+        <CursorEffects />
+      </ClientOnly>
+      
+      {/* Background Gradient */}
+      <div 
+        className="fixed inset-0 opacity-30 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(circle at 20% 50%, var(--color-primary) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, var(--color-accent) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, var(--color-complement) 0%, transparent 50%),
+            linear-gradient(135deg, var(--bg-base) 0%, var(--bg-elevated) 100%)
+          `
+        }}
+      />
+      
+      {/* Main Content */}
+      <main className="relative z-10">
+        {/* Header */}
+        <motion.header 
+          className="flex justify-between items-center p-6 md:p-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex flex-col">
+            <motion.h1 
+              className="text-2xl md:text-3xl font-bold text-glow"
+              style={{ color: 'var(--color-primary)' }}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              colonmelvin.com
+            </motion.h1>
+            <motion.p 
+              className="text-sm md:text-base opacity-80"
+              style={{ color: 'var(--text-secondary)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.8 }}
+              transition={{ delay: 0.3 }}
+            >
+              vibe coding experience
+            </motion.p>
+          </div>
+          
+          <ClientOnly>
+            <VibeControls />
+          </ClientOnly>
+        </motion.header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+        {/* Hero Section */}
+        <section className="px-6 md:px-8 py-12 md:py-20">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <span className="text-glow" style={{ color: 'var(--text-primary)' }}>
+                  Feel the{' '}
+                </span>
+                <motion.span
+                  className="text-glow"
+                  style={{ color: 'var(--color-primary)' }}
+                  animate={{ 
+                    textShadow: [
+                      '0 0 5px var(--color-primary)',
+                      '0 0 20px var(--color-primary), 0 0 30px var(--color-primary)',
+                      '0 0 5px var(--color-primary)'
+                    ]
+                  }}
+                  transition={{ 
+                    duration: 2, 
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  Vibe
+                </motion.span>
+              </h2>
+              
+              <motion.p 
+                className="text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed"
+                style={{ color: 'var(--text-secondary)' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                Adjust the dials. Control the atmosphere. Create your perfect coding environment 
+                where creativity flows and focus comes naturally.
+              </motion.p>
+
+              <motion.div
+                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+              >
+                <ClientOnly>
+                  <VibeButton />
+                </ClientOnly>
+                
+                <motion.div
+                  className="text-sm opacity-60"
+                  style={{ color: 'var(--text-muted)' }}
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  Move your cursor around ✨
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Code Display Section */}
+        <section className="px-6 md:px-8 py-12">
+          <div className="max-w-4xl mx-auto">
+            <ClientOnly>
+              <CodeDisplay />
+            </ClientOnly>
+          </div>
+        </section>
+
+        {/* About Section */}
+        <motion.section 
+          className="px-6 md:px-8 py-12 md:py-20"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <div className="max-w-3xl mx-auto text-center">
+            <h3 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--text-primary)' }}>
+              About This Experience
+            </h3>
+            <div className="space-y-4 text-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              <p>
+                This is an interactive playground where you control every aspect of the coding atmosphere. 
+                The vibe dials let you adjust lighting, colors, animation speed, and focus levels in real-time.
+              </p>
+              <p>
+                Built with Next.js, Framer Motion, and Tailwind CSS, this site demonstrates how modern web 
+                technologies can create immersive, responsive experiences that adapt to your preferences.
+              </p>
+              <p className="text-base opacity-80">
+                Created collaboratively using{' '}
+                <motion.a
+                  href="https://github.com/aws/amazon-q-developer-cli"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:no-underline transition-all"
+                  style={{ color: 'var(--color-primary)' }}
+                  whileHover={{ 
+                    textShadow: '0 0 8px var(--color-primary)',
+                    scale: 1.02 
+                  }}
+                >
+                  Amazon Q CLI
+                </motion.a>
+                {' '}— where human creativity meets AI assistance to build something extraordinary.
+              </p>
+              <motion.div
+                className="mt-8 p-6 glass-effect rounded-lg"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <p className="font-semibold mb-2" style={{ color: 'var(--color-primary)' }}>
+                  Try the presets:
+                </p>
+                <p>
+                  🎯 Focus • 😌 Chill • ⚡ Energy • 🌙 Midnight
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </motion.section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
+  );
+}
+
+function VibeButton() {
+  return (
+    <motion.button
+      className="px-8 py-4 rounded-lg font-semibold text-lg glass-effect focus-ring"
+      style={{ 
+        color: 'var(--color-primary)',
+        borderColor: 'var(--color-primary)'
+      }}
+      whileHover={{ 
+        scale: 1.05,
+        boxShadow: '0 0 20px var(--color-primary)'
+      }}
+      whileTap={{ scale: 0.95 }}
+      onClick={() => useVibeStore.getState().togglePanel()}
+    >
+      🎛️ Open Vibe Controls
+    </motion.button>
   );
 }
