@@ -38,31 +38,11 @@ export default function Home() {
       <main className="relative z-10">
         {/* Header */}
         <motion.header 
-          className="flex justify-between items-center p-6 md:p-8"
+          className="flex justify-end items-center p-6 md:p-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex flex-col">
-            <motion.h1 
-              className="text-2xl md:text-3xl font-bold text-glow"
-              style={{ color: 'var(--color-primary)' }}
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              colonmelvin.com
-            </motion.h1>
-            <motion.p 
-              className="text-sm md:text-base opacity-80"
-              style={{ color: 'var(--text-secondary)' }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.8 }}
-              transition={{ delay: 0.3 }}
-            >
-              vibe coding experience
-            </motion.p>
-          </div>
-          
           <ClientOnly>
             <VibeControls />
           </ClientOnly>
@@ -117,6 +97,39 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
               >
+                {/* Amazon Q CLI Credit - Prominent Position */}
+                <motion.div
+                  className="mb-4 sm:mb-0"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <motion.p 
+                    className="text-base opacity-80 font-light tracking-wide text-center"
+                    style={{ color: 'var(--text-secondary)' }}
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    crafted with{' '}
+                    <motion.a
+                      href="https://github.com/aws/amazon-q-developer-cli"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="relative inline-block font-medium"
+                      whileHover={{ 
+                        textShadow: '0 0 12px var(--color-primary)',
+                        scale: 1.05
+                      }}
+                      transition={{ duration: 0.3 }}
+                      style={{ color: 'var(--color-primary)' }}
+                    >
+                      <span className="text-lg">
+                        Amazon Q CLI
+                      </span>
+                    </motion.a>
+                  </motion.p>
+                </motion.div>
+
                 <ClientOnly>
                   <VibeButton />
                 </ClientOnly>
@@ -143,76 +156,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Amazon Q CLI Credit - More Visible */}
-        <motion.section 
-          className="px-6 md:px-8 py-20"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1.2 }}
-          viewport={{ once: true }}
-        >
-          <div className="max-w-2xl mx-auto text-center">
-            <motion.div
-              className="relative"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 200, damping: 10 }}
-            >
-              <motion.p 
-                className="text-base opacity-70 font-light tracking-wide"
-                style={{ color: 'var(--text-secondary)' }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.6 }}
-              >
-                crafted with{' '}
-                <motion.a
-                  href="https://github.com/aws/amazon-q-developer-cli"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative inline-block font-medium"
-                  whileHover={{ 
-                    textShadow: [
-                      '0 0 0px var(--color-primary)',
-                      '0 0 8px var(--color-primary)',
-                      '0 0 16px var(--color-primary)',
-                      '0 0 8px var(--color-primary)',
-                      '0 0 0px var(--color-primary)'
-                    ]
-                  }}
-                  transition={{ 
-                    textShadow: { 
-                      duration: 2, 
-                      ease: "easeInOut",
-                      times: [0, 0.25, 0.5, 0.75, 1]
-                    }
-                  }}
-                  style={{ color: 'var(--color-primary)' }}
-                >
-                  <span className="text-lg">
-                    Amazon Q CLI
-                  </span>
-                  
-                  {/* Subtle glow effect */}
-                  <motion.div
-                    className="absolute inset-0 -z-10"
-                    animate={{
-                      boxShadow: [
-                        '0 0 0px var(--color-primary)',
-                        '0 0 20px var(--color-primary)',
-                        '0 0 0px var(--color-primary)'
-                      ]
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  />
-                </motion.a>
-                {' '}— where human creativity meets AI assistance
-              </motion.p>
-            </motion.div>
-          </div>
-        </motion.section>
       </main>
     </div>
   );
