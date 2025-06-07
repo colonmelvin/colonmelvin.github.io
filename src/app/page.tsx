@@ -36,13 +36,71 @@ export default function Home() {
       
       {/* Main Content */}
       <main className="relative z-10">
-        {/* Header */}
+        {/* Header - Clean with floating vibe trigger */}
         <motion.header 
-          className="flex justify-end items-center p-6 md:p-8"
+          className="flex justify-end items-start p-6 md:p-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
+          {/* Floating Vibe Controls Trigger */}
+          <motion.button
+            className="group relative p-3 rounded-full glass-effect-subtle focus-ring"
+            style={{ 
+              backgroundColor: 'rgba(var(--color-primary-rgb), 0.1)',
+              border: '1px solid rgba(var(--color-primary-rgb), 0.2)'
+            }}
+            whileHover={{ 
+              scale: 1.1,
+              backgroundColor: 'rgba(var(--color-primary-rgb), 0.15)',
+              boxShadow: '0 0 20px rgba(var(--color-primary-rgb), 0.3)'
+            }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => useVibeStore.getState().togglePanel()}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.8, type: "spring", stiffness: 300 }}
+          >
+            {/* Icon */}
+            <motion.div
+              className="text-2xl"
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity, 
+                ease: "easeInOut",
+                repeatDelay: 3
+              }}
+            >
+              🎛️
+            </motion.div>
+            
+            {/* Tooltip */}
+            <motion.div
+              className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap pointer-events-none"
+              style={{ 
+                backgroundColor: 'var(--bg-elevated)',
+                color: 'var(--text-primary)',
+                border: '1px solid rgba(var(--color-primary-rgb), 0.2)'
+              }}
+              initial={{ opacity: 0, x: 10 }}
+              whileHover={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              Open Vibe Controls
+              {/* Arrow */}
+              <div 
+                className="absolute left-full top-1/2 -translate-y-1/2 w-0 h-0"
+                style={{
+                  borderLeft: '6px solid var(--bg-elevated)',
+                  borderTop: '6px solid transparent',
+                  borderBottom: '6px solid transparent'
+                }}
+              />
+            </motion.div>
+          </motion.button>
+
+          {/* Hidden VibeControls Panel */}
           <ClientOnly>
             <VibeControls />
           </ClientOnly>
@@ -92,14 +150,13 @@ export default function Home() {
               </motion.p>
 
               <motion.div
-                className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+                className="flex flex-col gap-6 justify-center items-center"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
               >
                 {/* Amazon Q CLI Credit - Better Typography & UX */}
                 <motion.div
-                  className="order-2 sm:order-1"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.9 }}
@@ -160,19 +217,33 @@ export default function Home() {
                   </motion.div>
                 </motion.div>
 
-                <ClientOnly>
-                  <div className="order-1 sm:order-2">
-                    <VibeButton />
-                  </div>
-                </ClientOnly>
-                
+                {/* Cursor hint */}
                 <motion.div
-                  className="order-3 text-sm opacity-60"
+                  className="text-sm opacity-60 flex items-center gap-2"
                   style={{ color: 'var(--text-muted)' }}
                   animate={{ opacity: [0.6, 1, 0.6] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  Move your cursor around ✨
+                  <span>Move your cursor around</span>
+                  <motion.span
+                    animate={{ rotate: [0, 20, -20, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    ✨
+                  </motion.span>
+                </motion.div>
+
+                {/* Subtle hint about vibe controls */}
+                <motion.div
+                  className="text-xs opacity-40 text-center"
+                  style={{ color: 'var(--text-muted)' }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.4 }}
+                  transition={{ delay: 2 }}
+                >
+                  <span>Click the </span>
+                  <span className="font-mono">🎛️</span>
+                  <span> in the top-right to customize your vibe</span>
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -190,25 +261,5 @@ export default function Home() {
 
       </main>
     </div>
-  );
-}
-
-function VibeButton() {
-  return (
-    <motion.button
-      className="px-8 py-4 rounded-lg font-semibold text-lg glass-effect focus-ring"
-      style={{ 
-        color: 'var(--color-primary)',
-        borderColor: 'var(--color-primary)'
-      }}
-      whileHover={{ 
-        scale: 1.05,
-        boxShadow: '0 0 20px var(--color-primary)'
-      }}
-      whileTap={{ scale: 0.95 }}
-      onClick={() => useVibeStore.getState().togglePanel()}
-    >
-      🎛️ Open Vibe Controls
-    </motion.button>
   );
 }
