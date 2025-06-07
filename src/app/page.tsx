@@ -43,61 +43,89 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {/* Floating Vibe Controls Trigger */}
+          {/* Professional Floating Vibe Controls Button */}
           <motion.button
-            className="group relative p-3 rounded-full glass-effect-subtle focus-ring"
+            className="group relative w-14 h-14 rounded-full focus-ring shadow-lg"
             style={{ 
-              backgroundColor: 'rgba(var(--color-primary-rgb), 0.1)',
-              border: '1px solid rgba(var(--color-primary-rgb), 0.2)'
+              background: 'linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.15), rgba(var(--color-primary-rgb), 0.25))',
+              border: '1px solid rgba(var(--color-primary-rgb), 0.3)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
             }}
             whileHover={{ 
-              scale: 1.1,
-              backgroundColor: 'rgba(var(--color-primary-rgb), 0.15)',
-              boxShadow: '0 0 20px rgba(var(--color-primary-rgb), 0.3)'
+              scale: 1.05,
+              background: 'linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.2), rgba(var(--color-primary-rgb), 0.35))',
+              boxShadow: '0 8px 32px rgba(var(--color-primary-rgb), 0.25), 0 0 0 1px rgba(var(--color-primary-rgb), 0.4)',
             }}
             whileTap={{ scale: 0.95 }}
             onClick={() => useVibeStore.getState().togglePanel()}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8, type: "spring", stiffness: 300 }}
+            initial={{ opacity: 0, scale: 0.8, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ 
+              delay: 0.8, 
+              type: "spring", 
+              stiffness: 400, 
+              damping: 25 
+            }}
           >
-            {/* Icon */}
+            {/* Icon with subtle animation */}
             <motion.div
-              className="text-2xl"
-              animate={{ rotate: [0, 10, -10, 0] }}
+              className="flex items-center justify-center w-full h-full text-xl"
+              style={{ color: 'var(--color-primary)' }}
+              animate={{ 
+                rotate: [0, 5, -5, 0],
+                scale: [1, 1.05, 1]
+              }}
               transition={{ 
-                duration: 2, 
+                duration: 4, 
                 repeat: Infinity, 
                 ease: "easeInOut",
-                repeatDelay: 3
+                repeatDelay: 2
               }}
             >
               🎛️
             </motion.div>
             
-            {/* Tooltip */}
+            {/* Professional tooltip */}
             <motion.div
-              className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap pointer-events-none"
+              className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
               style={{ 
-                backgroundColor: 'var(--bg-elevated)',
+                background: 'linear-gradient(135deg, var(--bg-elevated), var(--bg-glass))',
                 color: 'var(--text-primary)',
-                border: '1px solid rgba(var(--color-primary-rgb), 0.2)'
+                border: '1px solid rgba(var(--color-primary-rgb), 0.2)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
               }}
-              initial={{ opacity: 0, x: 10 }}
-              whileHover={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2 }}
             >
-              Open Vibe Controls
-              {/* Arrow */}
+              Customize Vibe
+              {/* Tooltip arrow */}
               <div 
-                className="absolute left-full top-1/2 -translate-y-1/2 w-0 h-0"
+                className="absolute left-full top-1/2 -translate-y-1/2"
                 style={{
+                  width: 0,
+                  height: 0,
                   borderLeft: '6px solid var(--bg-elevated)',
                   borderTop: '6px solid transparent',
-                  borderBottom: '6px solid transparent'
+                  borderBottom: '6px solid transparent',
+                  filter: 'drop-shadow(1px 0 1px rgba(var(--color-primary-rgb), 0.1))'
                 }}
               />
             </motion.div>
+
+            {/* Subtle glow ring */}
+            <motion.div
+              className="absolute inset-0 rounded-full pointer-events-none"
+              style={{
+                background: 'conic-gradient(from 0deg, transparent, rgba(var(--color-primary-rgb), 0.1), transparent)',
+              }}
+              animate={{ rotate: 360 }}
+              transition={{ 
+                duration: 8, 
+                repeat: Infinity, 
+                ease: "linear" 
+              }}
+            />
           </motion.button>
 
           {/* Hidden VibeControls Panel - no trigger button */}
