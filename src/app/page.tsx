@@ -92,50 +92,82 @@ export default function Home() {
               </motion.p>
 
               <motion.div
-                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+                className="flex flex-col sm:flex-row gap-6 justify-center items-center"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
               >
-                {/* Amazon Q CLI Credit - Prominent Position */}
+                {/* Amazon Q CLI Credit - Better Typography & UX */}
                 <motion.div
-                  className="mb-4 sm:mb-0"
+                  className="order-2 sm:order-1"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
+                  transition={{ delay: 0.9 }}
                 >
-                  <motion.p 
-                    className="text-base opacity-80 font-light tracking-wide text-center"
-                    style={{ color: 'var(--text-secondary)' }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.6 }}
+                  <motion.div 
+                    className="text-center px-4 py-2 rounded-full glass-effect-subtle"
+                    style={{ 
+                      backgroundColor: 'rgba(var(--color-primary-rgb), 0.05)',
+                      border: '1px solid rgba(var(--color-primary-rgb), 0.1)'
+                    }}
+                    whileHover={{ 
+                      scale: 1.02,
+                      backgroundColor: 'rgba(var(--color-primary-rgb), 0.08)',
+                      border: '1px solid rgba(var(--color-primary-rgb), 0.2)'
+                    }}
+                    transition={{ duration: 0.3 }}
                   >
-                    crafted with{' '}
-                    <motion.a
-                      href="https://github.com/aws/amazon-q-developer-cli"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="relative inline-block font-medium"
-                      whileHover={{ 
-                        textShadow: '0 0 12px var(--color-primary)',
-                        scale: 1.05
-                      }}
-                      transition={{ duration: 0.3 }}
-                      style={{ color: 'var(--color-primary)' }}
+                    <motion.p 
+                      className="text-sm font-medium tracking-wide"
+                      style={{ color: 'var(--text-secondary)' }}
                     >
-                      <span className="text-lg">
+                      <span className="opacity-75">vibing with </span>
+                      <motion.a
+                        href="https://github.com/aws/amazon-q-developer-cli"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="relative inline-block font-semibold"
+                        whileHover={{ 
+                          textShadow: '0 0 12px var(--color-primary)',
+                          scale: 1.05
+                        }}
+                        transition={{ duration: 0.3 }}
+                        style={{ color: 'var(--color-primary)' }}
+                      >
                         Amazon Q CLI
+                      </motion.a>
+                      <span className="opacity-75"> from </span>
+                      <span 
+                        className="font-mono text-xs px-2 py-1 rounded"
+                        style={{ 
+                          backgroundColor: 'rgba(var(--color-primary-rgb), 0.1)',
+                          color: 'var(--color-primary)'
+                        }}
+                      >
+                        prompt
                       </span>
-                    </motion.a>
-                  </motion.p>
+                      <span className="opacity-75"> to </span>
+                      <span 
+                        className="font-mono text-xs px-2 py-1 rounded"
+                        style={{ 
+                          backgroundColor: 'rgba(var(--color-accent-rgb), 0.1)',
+                          color: 'var(--color-accent)'
+                        }}
+                      >
+                        prod
+                      </span>
+                    </motion.p>
+                  </motion.div>
                 </motion.div>
 
                 <ClientOnly>
-                  <VibeButton />
+                  <div className="order-1 sm:order-2">
+                    <VibeButton />
+                  </div>
                 </ClientOnly>
                 
                 <motion.div
-                  className="text-sm opacity-60"
+                  className="order-3 text-sm opacity-60"
                   style={{ color: 'var(--text-muted)' }}
                   animate={{ opacity: [0.6, 1, 0.6] }}
                   transition={{ duration: 2, repeat: Infinity }}

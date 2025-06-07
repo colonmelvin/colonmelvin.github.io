@@ -21,6 +21,10 @@
   --color-accent: hsl(calc(var(--primary-hue) + 60deg), 70%, 60%);
   --color-complement: hsl(calc(var(--primary-hue) + 180deg), 70%, 60%);
   
+  /* RGB versions for rgba() usage */
+  --color-primary-rgb: 102, 102, 255; /* Will be updated by JS */
+  --color-accent-rgb: 255, 102, 255; /* Will be updated by JS */
+  
   /* Background System */
   --bg-base: hsl(var(--primary-hue), 20%, calc(5% + var(--vibe-ambiance) * 0.15%));
   --bg-elevated: hsl(var(--primary-hue), 15%, calc(10% + var(--vibe-ambiance) * 0.2%));
@@ -85,6 +89,11 @@ body {
   background: var(--bg-glass);
   backdrop-filter: blur(10px);
   border: 1px solid hsla(var(--primary-hue), 50%, 70%, 0.2);
+}
+
+.glass-effect-subtle {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .neon-glow {
