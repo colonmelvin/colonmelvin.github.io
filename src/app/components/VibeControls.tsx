@@ -11,6 +11,7 @@ export default function VibeControls() {
     animationSpeed,
     focusMode,
     soundLevel,
+    soundEnabled,
     currentAmbientSound,
     isPanelOpen,
     setAmbiance,
@@ -18,6 +19,7 @@ export default function VibeControls() {
     setAnimationSpeed,
     setFocusMode,
     setSoundLevel,
+    setSoundEnabled,
     togglePanel,
     applyPreset,
   } = useVibeStore();
@@ -138,62 +140,93 @@ export default function VibeControls() {
                     unit="%"
                   />
 
-                  {/* Sound Level Control */}
-                  <VibeSlider
-                    label="Ambient Sound"
-                    value={soundLevel}
-    onChange={setSoundLevel}
-                    min={0}
-                    max={100}
-                    leftIcon="🔇"
-                    rightIcon="🔊"
-                    unit="%"
-                  />
-
-                  {/* Sound Type Selection */}
-                  {soundLevel > 0 && (
-                    <div className="mt-4">
-                      <label className="text-sm font-medium mb-3 block" style={{ color: 'var(--text-primary)' }}>
-                        Ambient Type
+                  {/* Sound Controls */}
+                  <div className="space-y-4">
+                    {/* Sound Enable/Disable Checkbox */}
+                    <div className="flex items-center justify-between">
+                      <label className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                        Ambient Sound
                       </label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {[
-                          { id: 'keyboard', label: 'Keyboard', emoji: '⌨️' },
-                          { id: 'rain', label: 'Rain', emoji: '🌧️' },
-                          { id: 'cafe', label: 'Cafe', emoji: '☕' },
-                          { id: 'forest', label: 'Forest', emoji: '🌲' },
-                        ].map((sound) => (
-                          <motion.button
-                            key={sound.id}
-                            className={`p-3 rounded-lg text-center focus-ring transition-all ${
-                              currentAmbientSound === sound.id 
-                                ? 'glass-effect' 
-                                : 'hover:bg-opacity-10'
-                            }`}
-                            style={{ 
-                              borderColor: currentAmbientSound === sound.id 
-                                ? 'var(--color-primary)' 
-                                : 'transparent',
-                              backgroundColor: currentAmbientSound === sound.id 
-                                ? 'var(--bg-glass)' 
-                                : 'transparent'
-                            }}
-                            onClick={() => {
-                              useVibeStore.setState({ currentAmbientSound: sound.id });
-                              useVibeStore.getState().updateAmbientSound();
-                            }}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <div className="text-lg mb-1">{sound.emoji}</div>
-                            <div className="text-xs" style={{ color: 'var(--text-primary)' }}>
-                              {sound.label}
-                            </div>
-                          </motion.button>
-                        ))}
-                      </div>
+                      <motion.button
+                        className={`w-12 h-6 rounded-full p-1 transition-colors focus-ring ${
+                          soundEnabled ? 'bg-opacity-30' : 'bg-opacity-10'
+                        }`}
+                        style={{ 
+                          backgroundColor: soundEnabled ? 'var(--color-primary)' : 'var(--text-muted)',
+                        }}
+                        onClick={() => setSoundEnabled(!soundEnabled)}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <motion.div
+                          className="w-4 h-4 rounded-full"
+                          style={{ 
+                            backgroundColor: soundEnabled ? 'var(--color-primary)' : 'var(--text-muted)',
+                          }}
+                          animate={{ x: soundEnabled ? 20 : 0 }}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        />
+                      </motion.button>
                     </div>
-                  )}
+
+                    {/* Sound Level Slider - Only show when enabled */}
+                    {soundEnabled && (
+                      <VibeSlider
+                        label="Volume"
+                        value={soundLevel}
+                        onChange={setSoundLevel}
+                        min={0}
+                        max={100}
+                        leftIcon="🔇"
+                        rightIcon="🔊"
+                        unit="%"
+                      />
+                    )}
+
+                    {/* Sound Type Selection - Only show when enabled */}
+                    {soundEnabled && (
+                      <div className="mt-4">
+                        <label className="text-sm font-medium mb-3 block" style={{ color: 'var(--text-primary)' }}>
+                          Ambient Type
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          {[
+                            { id: 'keyboard', label: 'Keyboard', emoji: '⌨️' },
+                            { id: 'rain', label: 'Rain', emoji: '🌧️' },
+                            { id: 'cafe', label: 'Cafe', emoji: '☕' },
+                            { id: 'forest', label: 'Forest', emoji: '🌲' },
+                          ].map((sound) => (
+                            <motion.button
+                              key={sound.id}
+                              className={`p-3 rounded-lg text-center focus-ring transition-all ${
+                                currentAmbientSound === sound.id 
+                                  ? 'glass-effect' 
+                                  : 'hover:bg-opacity-10'
+                              }`}
+                              style={{ 
+                                borderColor: currentAmbientSound === sound.id 
+                                  ? 'var(--color-primary)' 
+                                  : 'transparent',
+                                backgroundColor: currentAmbientSound === sound.id 
+                                  ? 'var(--bg-glass)' 
+                                  : 'transparent'
+                              }}
+                              onClick={() => {
+                                useVibeStore.setState({ currentAmbientSound: sound.id });
+                                useVibeStore.getState().updateAmbientSound();
+                              }}
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              <div className="text-lg mb-1">{sound.emoji}</div>
+                              <div className="text-xs" style={{ color: 'var(--text-primary)' }}>
+                                {sound.label}
+                              </div>
+                            </motion.button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Presets */}
@@ -226,7 +259,7 @@ export default function VibeControls() {
                     💡 Move your cursor around to see interactive effects. 
                     All changes apply instantly to create your perfect coding vibe.
                   </p>
-                  {soundLevel > 0 && (
+                  {soundEnabled && (
                     <p className="text-xs mt-2 opacity-75" style={{ color: 'var(--text-muted)' }}>
                       🔊 Ambient sounds are generated procedurally using Web Audio API. 
                       If you don&apos;t hear anything, try adjusting your browser&apos;s audio settings.
@@ -245,6 +278,7 @@ export default function VibeControls() {
                         console.log('🧪 Test button clicked');
                         const store = useVibeStore.getState();
                         console.log('Current state:', {
+                          soundEnabled: store.soundEnabled,
                           soundLevel: store.soundLevel,
                           currentAmbientSound: store.currentAmbientSound
                         });
@@ -252,9 +286,11 @@ export default function VibeControls() {
                         // Test audio system
                         const audioWorking = await audioManager.testAudio();
                         
-                        if (audioWorking && store.soundLevel > 0) {
+                        if (audioWorking && store.soundEnabled && store.soundLevel > 0) {
                           console.log('🎵 Triggering ambient sound...');
                           store.updateAmbientSound();
+                        } else if (!store.soundEnabled) {
+                          console.log('⚠️ Sound is disabled, enable it first');
                         } else if (store.soundLevel === 0) {
                           console.log('⚠️ Sound level is 0, increase it first');
                         } else {

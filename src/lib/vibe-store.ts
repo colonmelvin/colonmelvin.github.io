@@ -8,6 +8,7 @@ export interface VibeState {
   animationSpeed: number; // 0.1-3 (speed multiplier)
   focusMode: number; // 0-100 (minimal to rich)
   soundLevel: number; // 0-100 (volume)
+  soundEnabled: boolean; // Whether sound is enabled at all
   
   // Audio state
   currentAmbientSound: string | null;
@@ -22,6 +23,7 @@ export interface VibeState {
   setAnimationSpeed: (value: number) => void;
   setFocusMode: (value: number) => void;
   setSoundLevel: (value: number) => void;
+  setSoundEnabled: (enabled: boolean) => void;
   togglePanel: () => void;
   setIsMobile: (value: boolean) => void;
   applyPreset: (preset: VibePreset) => void;
@@ -39,6 +41,7 @@ const presets: Record<VibePreset, Partial<VibeState>> = {
     focusMode: 20,
     soundLevel: 15,
     currentAmbientSound: 'keyboard',
+    // Note: soundEnabled is NOT set here - preserves user's choice
   },
   chill: {
     ambiance: 60,
@@ -72,7 +75,8 @@ export const useVibeStore = create<VibeState>((set, get) => ({
   colorHue: 240,
   animationSpeed: 1.0,
   focusMode: 50,
-  soundLevel: 0,
+  soundLevel: 30, // Default volume when enabled
+  soundEnabled: false, // Sound starts OFF
   currentAmbientSound: null,
   isPanelOpen: false,
   isMobile: false,
@@ -107,6 +111,14 @@ export const useVibeStore = create<VibeState>((set, get) => ({
     get().updateAmbientSound();
   },
 
+  setSoundEnabled: (enabled: boolean) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🔊 setSoundEnabled called with:', enabled);
+    }
+    set({ soundEnabled: enabled });
+    get().updateAmbientSound();
+  },
+
   togglePanel: () => set((state) => ({ isPanelOpen: !state.isPanelOpen })),
 
   setIsMobile: (value: boolean) => set({ isMobile: value }),
@@ -119,7 +131,15 @@ export const useVibeStore = create<VibeState>((set, get) => ({
     if (process.env.NODE_ENV === 'development') {
       console.log('🎨 Preset values:', presetValues);
     }
-    set((state) => ({ ...state, ...presetValues }));
+    
+    // Apply preset but preserve soundEnabled state
+    const currentSoundEnabled = get().soundEnabled;
+    set((state) => ({ 
+      ...state, 
+      ...presetValues,
+      soundEnabled: currentSoundEnabled // Preserve user's sound preference
+    }));
+    
     get().updateCSSVariables();
     get().updateAmbientSound();
   },
@@ -142,14 +162,16 @@ export const useVibeStore = create<VibeState>((set, get) => ({
     
     if (process.env.NODE_ENV === 'development') {
       console.log('🔊 updateAmbientSound called:', {
+        soundEnabled: state.soundEnabled,
         soundLevel: state.soundLevel,
         currentAmbientSound: state.currentAmbientSound
       });
     }
     
-    if (state.soundLevel === 0) {
+    // Only play sound if explicitly enabled
+    if (!state.soundEnabled || state.soundLevel === 0) {
       if (process.env.NODE_ENV === 'development') {
-        console.log('🔇 Stopping all audio (volume = 0)');
+        console.log('🔇 Stopping all audio (sound disabled or volume = 0)');
       }
       audioManager.stopAll();
       return;
