@@ -5,23 +5,23 @@
 Your vibe coding experience is now live at:
 **https://colonmelvin.github.io**
 
-## 📁 Repository Structure (Reorganized)
+## 📁 Repository Structure (CORRECTED)
 
-- **`master` branch**: Main development branch (your new vibe site)
-- **`gh-pages` branch**: Deployed static site (auto-generated from master)
+- **`development` branch**: Source code for development (Next.js project)
+- **`master` branch**: Built static files (served by GitHub Pages)
 - **`archive-old-site` branch**: Your previous website (safely preserved)
 
 ## 🔄 Deployment Workflow
 
-1. **Development**: Work on `master` branch
-2. **Deploy**: Run `npm run deploy` 
+1. **Development**: Work on `development` branch
+2. **Deploy**: Run `npm run deploy` (builds and pushes to `master`)
 3. **Live**: Changes appear at https://colonmelvin.github.io
 
 ## 📋 GitHub Pages Settings
 
 GitHub Pages should be configured to use:
 - **Source**: Deploy from a branch
-- **Branch**: `gh-pages` / `/ (root)`
+- **Branch**: `master` / `/ (root)`
 
 You can verify this at:
 https://github.com/colonmelvin/colonmelvin.github.io/settings/pages
@@ -31,12 +31,15 @@ https://github.com/colonmelvin/colonmelvin.github.io/settings/pages
 To update the site:
 
 ```bash
-# Make your changes on master branch
+# Work on development branch
+git checkout development
+
+# Make your changes
 git add .
 git commit -m "Your update message"
-git push origin master
+git push origin development
 
-# Deploy to GitHub Pages
+# Deploy built files to master branch
 npm run deploy
 ```
 
@@ -49,12 +52,20 @@ npm run deploy
 🎯 **4 preset modes**: Focus, Chill, Energy, Midnight
 🤖 **Amazon Q CLI credit** with beautiful hover effects
 
-## 🔧 Branch Reorganization Complete
+## 🔧 How Deployment Works
 
-✅ **Old site safely archived** in `archive-old-site` branch
-✅ **Master branch now contains your new vibe site**
-✅ **Clean deployment workflow** using `gh-pages` branch
-✅ **GitHub Pages configured** to serve from `gh-pages`
+The `npm run deploy` command:
+1. **Builds** the Next.js app (`npm run export`)
+2. **Exports** static files to `/out` directory
+3. **Pushes** the `/out` contents to `master` branch
+4. **GitHub Pages** serves the static files from `master`
+
+## ✅ Branch Reorganization Complete
+
+✅ **Source code** safely stored in `development` branch
+✅ **Built files** deployed to `master` branch (GitHub Pages)
+✅ **Old site** archived in `archive-old-site` branch
+✅ **Clean separation** between development and deployment
 
 ## 🔍 Troubleshooting
 
@@ -71,4 +82,8 @@ If the site doesn't load:
 - **60fps animations**: Smooth performance on all devices
 - **Web Audio API**: Real-time procedural sound generation
 
-Your vibe coding experience is now live with proper branch organization! 🎉✨
+Your vibe coding experience is now live with the correct deployment structure! 🎉✨
+
+## 🚨 Important Note
+
+**Always work on the `development` branch** - the `master` branch contains only built files and gets overwritten on each deployment.
