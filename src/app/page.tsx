@@ -143,7 +143,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Subtle Amazon Q CLI Credit - Rick Rubin Style */}
+        {/* Amazon Q CLI Credit - More Visible */}
         <motion.section 
           className="px-6 md:px-8 py-20"
           initial={{ opacity: 0 }}
@@ -158,9 +158,9 @@ export default function Home() {
               transition={{ type: "spring", stiffness: 200, damping: 10 }}
             >
               <motion.p 
-                className="text-sm opacity-40 font-light tracking-wide"
-                style={{ color: 'var(--text-muted)' }}
-                whileHover={{ opacity: 0.8 }}
+                className="text-base opacity-70 font-light tracking-wide"
+                style={{ color: 'var(--text-secondary)' }}
+                whileHover={{ opacity: 1 }}
                 transition={{ duration: 0.6 }}
               >
                 crafted with{' '}
@@ -168,7 +168,7 @@ export default function Home() {
                   href="https://github.com/aws/amazon-q-developer-cli"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="relative inline-block"
+                  className="relative inline-block font-medium"
                   whileHover={{ 
                     textShadow: [
                       '0 0 0px var(--color-primary)',
@@ -187,18 +187,9 @@ export default function Home() {
                   }}
                   style={{ color: 'var(--color-primary)' }}
                 >
-                  <motion.span
-                    animate={{ 
-                      opacity: [0.6, 1, 0.6] 
-                    }}
-                    transition={{ 
-                      duration: 4, 
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  >
-                    amazon q cli
-                  </motion.span>
+                  <span className="text-lg">
+                    Amazon Q CLI
+                  </span>
                   
                   {/* Subtle glow effect */}
                   <motion.div
@@ -217,7 +208,7 @@ export default function Home() {
                     }}
                   />
                 </motion.a>
-                {' '}— where human creativity meets ai assistance
+                {' '}— where human creativity meets AI assistance
               </motion.p>
             </motion.div>
           </div>
