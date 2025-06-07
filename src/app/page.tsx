@@ -143,57 +143,83 @@ export default function Home() {
           </div>
         </section>
 
-        {/* About Section */}
+        {/* Subtle Amazon Q CLI Credit - Rick Rubin Style */}
         <motion.section 
-          className="px-6 md:px-8 py-12 md:py-20"
+          className="px-6 md:px-8 py-20"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1.2 }}
           viewport={{ once: true }}
         >
-          <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--text-primary)' }}>
-              About This Experience
-            </h3>
-            <div className="space-y-4 text-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-              <p>
-                This is an interactive playground where you control every aspect of the coding atmosphere. 
-                The vibe dials let you adjust lighting, colors, animation speed, and focus levels in real-time.
-              </p>
-              <p>
-                Built with Next.js, Framer Motion, and Tailwind CSS, this site demonstrates how modern web 
-                technologies can create immersive, responsive experiences that adapt to your preferences.
-              </p>
-              <p className="text-base opacity-80">
-                Created collaboratively using{' '}
+          <div className="max-w-2xl mx-auto text-center">
+            <motion.div
+              className="relative"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 200, damping: 10 }}
+            >
+              <motion.p 
+                className="text-sm opacity-40 font-light tracking-wide"
+                style={{ color: 'var(--text-muted)' }}
+                whileHover={{ opacity: 0.8 }}
+                transition={{ duration: 0.6 }}
+              >
+                crafted with{' '}
                 <motion.a
                   href="https://github.com/aws/amazon-q-developer-cli"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline hover:no-underline transition-all"
-                  style={{ color: 'var(--color-primary)' }}
+                  className="relative inline-block"
                   whileHover={{ 
-                    textShadow: '0 0 8px var(--color-primary)',
-                    scale: 1.02 
+                    textShadow: [
+                      '0 0 0px var(--color-primary)',
+                      '0 0 8px var(--color-primary)',
+                      '0 0 16px var(--color-primary)',
+                      '0 0 8px var(--color-primary)',
+                      '0 0 0px var(--color-primary)'
+                    ]
                   }}
+                  transition={{ 
+                    textShadow: { 
+                      duration: 2, 
+                      ease: "easeInOut",
+                      times: [0, 0.25, 0.5, 0.75, 1]
+                    }
+                  }}
+                  style={{ color: 'var(--color-primary)' }}
                 >
-                  Amazon Q CLI
+                  <motion.span
+                    animate={{ 
+                      opacity: [0.6, 1, 0.6] 
+                    }}
+                    transition={{ 
+                      duration: 4, 
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    amazon q cli
+                  </motion.span>
+                  
+                  {/* Subtle glow effect */}
+                  <motion.div
+                    className="absolute inset-0 -z-10"
+                    animate={{
+                      boxShadow: [
+                        '0 0 0px var(--color-primary)',
+                        '0 0 20px var(--color-primary)',
+                        '0 0 0px var(--color-primary)'
+                      ]
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
                 </motion.a>
-                {' '}— where human creativity meets AI assistance to build something extraordinary.
-              </p>
-              <motion.div
-                className="mt-8 p-6 glass-effect rounded-lg"
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <p className="font-semibold mb-2" style={{ color: 'var(--color-primary)' }}>
-                  Try the presets:
-                </p>
-                <p>
-                  🎯 Focus • 😌 Chill • ⚡ Energy • 🌙 Midnight
-                </p>
-              </motion.div>
-            </div>
+                {' '}— where human creativity meets ai assistance
+              </motion.p>
+            </motion.div>
           </div>
         </motion.section>
       </main>
