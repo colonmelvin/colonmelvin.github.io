@@ -6,9 +6,13 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true
   },
-  // GitHub Pages serves from a subdirectory, adjust if needed
-  basePath: process.env.NODE_ENV === 'production' ? '' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
+  // Configure for GitHub Pages deployment
+  basePath: '',
+  assetPrefix: '',
+  // Use relative paths for assets
+  experimental: {
+    // This helps with static export paths
+  }
 };
 
 export default nextConfig;
