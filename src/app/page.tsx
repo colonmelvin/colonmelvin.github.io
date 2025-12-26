@@ -3,7 +3,6 @@ import CustomCursor from '@/components/CustomCursor';
 import ForestHero from '@/components/ForestHero';
 import MeditationTimer from '@/components/MeditationTimer';
 import Quote from '@/components/Quote';
-import OrganicSection from '@/components/OrganicSection';
 import Facts from '@/components/Facts';
 import ForestMarquee from '@/components/ForestMarquee';
 import ForestFooter from '@/components/ForestFooter';
@@ -16,7 +15,6 @@ export default function Home() {
         <ForestHero />
         <MeditationTimer />
         <Quote />
-        <OrganicSection />
         <Facts />
         <ForestMarquee />
         <ForestFooter />

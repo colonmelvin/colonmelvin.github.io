@@ -108,18 +108,19 @@ export default function MeditationTimer() {
         <source src="/audio/bell.mp3" type="audio/mpeg" />
       </audio>
 
-      {/* Floating trigger */}
+      {/* Floating trigger - bottom center */}
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm border border-emerald-800/30 hover:border-emerald-600/50 transition-colors"
-        style={{ background: 'rgba(4, 7, 4, 0.6)' }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full flex items-center gap-2 backdrop-blur-sm border border-emerald-800/30 hover:border-emerald-600/40 transition-colors"
+        style={{ background: 'rgba(4, 7, 4, 0.7)' }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
+        transition={{ delay: 1.5 }}
       >
-        <span className="text-emerald-400/70 text-xl">☯</span>
+        <span className="text-emerald-400/50 text-sm">↻</span>
+        <span className="text-emerald-200/60 text-sm tracking-wide font-light">return to center</span>
       </motion.button>
 
       {/* Modal */}
