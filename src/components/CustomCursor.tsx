@@ -22,7 +22,7 @@ export default function CustomCursor() {
     const animate = () => {
       cursorX += (mouseX - cursorX) * 0.1;
       cursorY += (mouseY - cursorY) * 0.1;
-      cursor.style.transform = `translate(${cursorX - 16}px, ${cursorY - 16}px)`;
+      cursor.style.transform = `translate(${cursorX - 6}px, ${cursorY - 6}px)`;
       requestAnimationFrame(animate);
     };
 
@@ -51,13 +51,13 @@ export default function CustomCursor() {
   return (
     <motion.div
       ref={cursorRef}
-      className="fixed top-0 left-0 w-8 h-8 pointer-events-none z-[9999] mix-blend-difference hidden md:block"
+      className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:block"
       animate={{
-        scale: isHovering ? 2.5 : 1,
+        scale: isHovering ? 1.5 : 1,
       }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
     >
-      <div className="w-full h-full rounded-full bg-white" />
+      <div className="w-3 h-3 rounded-full bg-emerald-400/60 shadow-[0_0_8px_2px_rgba(52,211,153,0.3)]" />
     </motion.div>
   );
 }

@@ -7,8 +7,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const facts = [
-  { icon: '🧘', label: 'Practice', value: 'Meditation' },
-  { icon: '📍', label: 'Based in', value: 'North Carolina' },
   { icon: '☁️', label: 'Building at', value: 'AWS' },
   { icon: '📷', label: 'Capturing', value: 'Moments' },
   { icon: '📈', label: 'Trading', value: 'Markets' },

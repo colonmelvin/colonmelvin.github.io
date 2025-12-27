@@ -14,9 +14,9 @@ export default function PhysiologicalSigh({ onClose }: { onClose: () => void }) 
     if (phase === 'ready' || phase === 'complete') return;
 
     const timings: Record<string, number> = {
-      inhale1: 1500,
-      inhale2: 800,
-      exhale: 4000,
+      inhale1: 2500,  // 2.5s first inhale
+      inhale2: 1000,  // 1s second sip
+      exhale: 7000,   // 7s long exhale (longer than combined inhales)
     };
 
     const timer = setTimeout(() => {
@@ -72,12 +72,12 @@ export default function PhysiologicalSigh({ onClose }: { onClose: () => void }) 
         <motion.div
           className="absolute w-32 h-32 rounded-full border-2 border-emerald-500/30"
           animate={{ scale }}
-          transition={{ duration: phase === 'exhale' ? 4 : phase === 'inhale2' ? 0.8 : 1.5, ease: 'easeInOut' }}
+          transition={{ duration: phase === 'exhale' ? 7 : phase === 'inhale2' ? 1 : 2.5, ease: 'easeInOut' }}
         />
         <motion.div
           className="absolute w-24 h-24 rounded-full bg-emerald-500/10"
           animate={{ scale }}
-          transition={{ duration: phase === 'exhale' ? 4 : phase === 'inhale2' ? 0.8 : 1.5, ease: 'easeInOut' }}
+          transition={{ duration: phase === 'exhale' ? 7 : phase === 'inhale2' ? 1 : 2.5, ease: 'easeInOut' }}
         />
         
         <div className="relative z-10 text-center">

@@ -53,7 +53,7 @@ export default function ParticleText({ text = 'breathe' }: { text?: string }) {
     offCtx.font = `200 ${fontSize}px Inter, system-ui, sans-serif`;
     offCtx.textAlign = 'center';
     offCtx.textBaseline = 'middle';
-    offCtx.fillText(text, dimensions.width / 2, dimensions.height / 2);
+    offCtx.fillText(text, dimensions.width / 2, dimensions.height * 0.55);
 
     // Sample pixels to get particle positions
     const imageData = offCtx.getImageData(0, 0, dimensions.width, dimensions.height);
@@ -89,32 +89,32 @@ export default function ParticleText({ text = 'breathe' }: { text?: string }) {
 
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTimeRef.current;
-      const progress = Math.min(elapsed / 7000, 1); // 7 seconds to settle (slower)
+      const progress = Math.min(elapsed / 12000, 1); // 12 seconds to settle (slower)
       
-      ctx.fillStyle = 'rgba(4, 7, 4, 0.08)'; // Slower fade for smoother trails
+      ctx.fillStyle = 'rgba(4, 7, 4, 0.05)'; // Slower fade for smoother trails
       ctx.fillRect(0, 0, dimensions.width, dimensions.height);
 
-      const easeProgress = 1 - Math.pow(1 - progress, 4); // Smoother ease
+      const easeProgress = 1 - Math.pow(1 - progress, 3); // Gentler ease
 
       for (const p of particlesRef.current) {
         if (progress < 1) {
           // Chaotic phase - particles drift and slowly move toward target
-          if (progress < 0.25) {
-            // Gentle chaos
-            p.x += p.vx * 0.5;
-            p.y += p.vy * 0.5;
-            p.vx *= 0.99;
-            p.vy *= 0.99;
-            p.vx += (Math.random() - 0.5) * 0.2;
-            p.vy += (Math.random() - 0.5) * 0.2;
+          if (progress < 0.35) {
+            // Longer gentle chaos
+            p.x += p.vx * 0.4;
+            p.y += p.vy * 0.4;
+            p.vx *= 0.995;
+            p.vy *= 0.995;
+            p.vx += (Math.random() - 0.5) * 0.15;
+            p.vy += (Math.random() - 0.5) * 0.15;
           } else {
             // Gradually move toward target
-            const attraction = (easeProgress - 0.2) * 1.2;
-            p.x += (p.targetX - p.x) * attraction * 0.04;
-            p.y += (p.targetY - p.y) * attraction * 0.04;
+            const attraction = (easeProgress - 0.25) * 0.8;
+            p.x += (p.targetX - p.x) * attraction * 0.025;
+            p.y += (p.targetY - p.y) * attraction * 0.025;
             // Add subtle drift
-            p.x += Math.sin(currentTime * 0.001 + p.targetX * 0.01) * (1 - easeProgress) * 1.5;
-            p.y += Math.cos(currentTime * 0.001 + p.targetY * 0.01) * (1 - easeProgress) * 1.5;
+            p.x += Math.sin(currentTime * 0.001 + p.targetX * 0.01) * (1 - easeProgress) * 1.2;
+            p.y += Math.cos(currentTime * 0.001 + p.targetY * 0.01) * (1 - easeProgress) * 1.2;
           }
         } else {
           // Settled - gentle breathing motion

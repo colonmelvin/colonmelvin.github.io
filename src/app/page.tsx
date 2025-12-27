@@ -4,8 +4,6 @@ import ForestHero from '@/components/ForestHero';
 import MeditationTimer from '@/components/MeditationTimer';
 import Quote from '@/components/Quote';
 import Facts from '@/components/Facts';
-import ForestMarquee from '@/components/ForestMarquee';
-import ForestFooter from '@/components/ForestFooter';
 
 export default function Home() {
   return (
@@ -16,8 +14,6 @@ export default function Home() {
         <MeditationTimer />
         <Quote />
         <Facts />
-        <ForestMarquee />
-        <ForestFooter />
       </div>
     </SmoothScroll>
   );

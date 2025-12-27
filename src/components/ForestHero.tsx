@@ -17,7 +17,7 @@ export default function ForestHero() {
         subtitleRef.current.style.opacity = '1';
         subtitleRef.current.style.transform = 'translateY(0)';
       }
-    }, 7500);
+    }, 13000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -30,7 +30,7 @@ export default function ForestHero() {
       <div className="relative z-20 text-center pointer-events-none">
         <p 
           ref={subtitleRef}
-          className="mt-32 text-base md:text-lg text-emerald-200/30 tracking-[0.4em] uppercase font-light transition-all duration-1000"
+          className="mt-64 text-base md:text-lg text-emerald-200/30 tracking-[0.4em] uppercase font-light transition-all duration-1000"
           style={{ opacity: 0, transform: 'translateY(20px)' }}
         >
           a moment of stillness

@@ -1,14 +1,20 @@
 'use client';
 
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo, useEffect, useState } from 'react';
 import * as THREE from 'three';
 
 // Particle-based tree with conical shape
-function Tree({ position, scale = 1, seed = 0, variant = 0 }: { position: [number, number, number]; scale?: number; seed?: number; variant?: number }) {
+function Tree({ position, scale = 1, seed = 0, variant = 0, delay = 0 }: { position: [number, number, number]; scale?: number; seed?: number; variant?: number; delay?: number }) {
   const group = useRef<THREE.Group>(null);
   const leavesRef = useRef<THREE.Points>(null);
   const basePositions = useRef<Float32Array | null>(null);
+  const [visible, setVisible] = useState(false);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), delay * 1000);
+    return () => clearTimeout(timer);
+  }, [delay]);
   
   const count = 120 + variant * 40;
   
@@ -77,6 +83,8 @@ function Tree({ position, scale = 1, seed = 0, variant = 0 }: { position: [numbe
       leavesRef.current.geometry.attributes.position.needsUpdate = true;
     }
   });
+
+  if (!visible) return null;
 
   return (
     <group ref={group} position={position} scale={scale}>
@@ -359,9 +367,9 @@ export default function ForestScene() {
     const arr: { pos: [number, number, number]; scale: number; seed: number; variant: number }[] = [];
     
     // Back layer - tall distant trees
-    for (let i = 0; i < 18; i++) {
+    for (let i = 0; i < 22; i++) {
       arr.push({
-        pos: [(Math.random() - 0.5) * 24, 0, -7 - Math.random() * 5],
+        pos: [(Math.random() - 0.5) * 26, 0, -7 - Math.random() * 5],
         scale: 1.0 + Math.random() * 0.5,
         seed: Math.random() * 100,
         variant: 2,
@@ -369,9 +377,9 @@ export default function ForestScene() {
     }
     
     // Middle layer
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 24; i++) {
       arr.push({
-        pos: [(Math.random() - 0.5) * 20, 0, -3 - Math.random() * 4],
+        pos: [(Math.random() - 0.5) * 22, 0, -3 - Math.random() * 4],
         scale: 0.7 + Math.random() * 0.4,
         seed: Math.random() * 100,
         variant: 1,
@@ -379,10 +387,23 @@ export default function ForestScene() {
     }
     
     // Front layer - smaller trees
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 18; i++) {
       arr.push({
-        pos: [(Math.random() - 0.5) * 16, 0, -0.5 - Math.random() * 2.5],
+        pos: [(Math.random() - 0.5) * 18, 0, -0.5 - Math.random() * 2.5],
         scale: 0.4 + Math.random() * 0.35,
+        seed: Math.random() * 100,
+        variant: 0,
+      });
+    }
+    
+    // Foreground trees - closer, larger at bottom of screen
+    for (let i = 0; i < 12; i++) {
+      const x = (Math.random() - 0.5) * 20;
+      // Avoid center area where text is
+      if (Math.abs(x) < 3) continue;
+      arr.push({
+        pos: [x, 0, 3 + Math.random() * 2],
+        scale: 0.6 + Math.random() * 0.4,
         seed: Math.random() * 100,
         variant: 0,
       });
@@ -422,7 +443,7 @@ export default function ForestScene() {
         ))}
         
         {trees.map((t, i) => (
-          <Tree key={i} position={t.pos} scale={t.scale} seed={t.seed} variant={t.variant} />
+          <Tree key={i} position={t.pos} scale={t.scale} seed={t.seed} variant={t.variant} delay={0.5 + i * 0.08} />
         ))}
         
         <Fireflies count={50} />
