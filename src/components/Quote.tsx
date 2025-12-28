@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Flowing water canvas
+// Flowing water canvas - river shape
 function FlowingWater() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -24,34 +24,48 @@ function FlowingWater() {
     resize();
     window.addEventListener('resize', resize);
 
-    const particles: { x: number; y: number; speed: number; size: number }[] = [];
-    const count = 60;
     const width = canvas.offsetWidth;
     const height = canvas.offsetHeight;
+    
+    // River path function - gentle S curve at bottom
+    const getRiverY = (x: number) => {
+      const normalized = x / width;
+      return height * 0.75 + Math.sin(normalized * Math.PI * 2) * 40;
+    };
+
+    const particles: { x: number; yOffset: number; speed: number; size: number; phase: number }[] = [];
+    const count = 100;
 
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * width,
-        y: Math.random() * height,
-        speed: 0.3 + Math.random() * 0.5,
-        size: 1 + Math.random() * 2,
+        yOffset: (Math.random() - 0.5) * 50, // Spread within river width
+        speed: 0.5 + Math.random() * 0.8,
+        size: 1.5 + Math.random() * 2,
+        phase: Math.random() * Math.PI * 2,
       });
     }
 
+    let time = 0;
     let animationId: number;
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
+      time += 0.015;
       
       for (const p of particles) {
-        // Flow left to right with gentle wave
         p.x += p.speed;
-        const wave = Math.sin(p.x * 0.02 + p.y * 0.01) * 0.5;
+        if (p.x > width + 10) {
+          p.x = -10;
+          p.yOffset = (Math.random() - 0.5) * 50;
+        }
         
-        if (p.x > width + 10) p.x = -10;
+        const riverY = getRiverY(p.x);
+        const wave = Math.sin(time + p.phase) * 3;
+        const y = riverY + p.yOffset + wave;
         
         ctx.beginPath();
-        ctx.arc(p.x, p.y + wave, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(100, 180, 220, ${0.06 + p.speed * 0.04})`;
+        ctx.ellipse(p.x, y, p.size * 1.5, p.size * 0.6, 0, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(120, 180, 210, ${0.15 + p.speed * 0.06})`;
         ctx.fill();
       }
       
@@ -84,8 +98,8 @@ export default function Quote() {
           stagger: 0.08,
           scrollTrigger: {
             trigger: containerRef.current,
-            start: 'top 60%',
-            end: 'bottom 40%',
+            start: 'top 80%',
+            end: 'center center',
             scrub: true,
           },
         }
@@ -108,7 +122,7 @@ export default function Quote() {
   ];
   
   return (
-    <section ref={containerRef} className="relative min-h-[80vh] flex items-center justify-center px-8 py-24 bg-[#040804]">
+    <section ref={containerRef} className="relative min-h-[80vh] flex items-center justify-center px-8 pt-24 pb-48 bg-[#040804]">
       <FlowingWater />
       <div className="relative z-10 max-w-4xl">
         <p ref={textRef} className="text-3xl md:text-5xl font-extralight leading-relaxed text-center tracking-wide" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>

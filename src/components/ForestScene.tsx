@@ -4,6 +4,21 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useRef, useMemo, useEffect, useState } from 'react';
 import * as THREE from 'three';
 
+// Create circular particle texture
+function createCircleTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 32;
+  canvas.height = 32;
+  const ctx = canvas.getContext('2d')!;
+  const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+  gradient.addColorStop(0, 'rgba(255,255,255,1)');
+  gradient.addColorStop(0.5, 'rgba(255,255,255,0.5)');
+  gradient.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 32, 32);
+  return new THREE.CanvasTexture(canvas);
+}
+
 // Particle-based tree with conical shape
 function Tree({ position, scale = 1, seed = 0, variant = 0, delay = 0 }: { position: [number, number, number]; scale?: number; seed?: number; variant?: number; delay?: number }) {
   const group = useRef<THREE.Group>(null);
@@ -106,6 +121,7 @@ function Bush({ position, scale = 1, seed = 0 }: { position: [number, number, nu
   const ref = useRef<THREE.Points>(null);
   const basePositions = useRef<Float32Array | null>(null);
   const count = 35;
+  const circleTexture = useMemo(() => createCircleTexture(), []);
   
   const geometry = useMemo(() => {
     const geo = new THREE.BufferGeometry();
@@ -150,7 +166,7 @@ function Bush({ position, scale = 1, seed = 0 }: { position: [number, number, nu
 
   return (
     <points ref={ref} position={position} scale={scale} geometry={geometry}>
-      <pointsMaterial size={0.08} vertexColors transparent opacity={0.75} sizeAttenuation />
+      <pointsMaterial size={0.12} map={circleTexture} vertexColors transparent opacity={0.75} sizeAttenuation depthWrite={false} />
     </points>
   );
 }
@@ -159,6 +175,7 @@ function Bush({ position, scale = 1, seed = 0 }: { position: [number, number, nu
 function Fireflies({ count = 50 }: { count?: number }) {
   const ref = useRef<THREE.Points>(null);
   const phases = useRef<Float32Array>(new Float32Array(count));
+  const circleTexture = useMemo(() => createCircleTexture(), []);
   
   const geometry = useMemo(() => {
     const geo = new THREE.BufferGeometry();
@@ -194,7 +211,7 @@ function Fireflies({ count = 50 }: { count?: number }) {
 
   return (
     <points ref={ref} geometry={geometry}>
-      <pointsMaterial size={0.09} color="#c5e063" transparent opacity={0.5} sizeAttenuation blending={THREE.AdditiveBlending} />
+      <pointsMaterial size={0.15} map={circleTexture} color="#c5e063" transparent opacity={0.5} sizeAttenuation blending={THREE.AdditiveBlending} depthWrite={false} />
     </points>
   );
 }
@@ -317,6 +334,7 @@ function Grass() {
   const ref = useRef<THREE.Points>(null);
   const basePositions = useRef<Float32Array | null>(null);
   const count = 150;
+  const circleTexture = useMemo(() => createCircleTexture(), []);
   
   const geometry = useMemo(() => {
     const geo = new THREE.BufferGeometry();
@@ -357,7 +375,7 @@ function Grass() {
 
   return (
     <points ref={ref} geometry={geometry}>
-      <pointsMaterial size={0.06} vertexColors transparent opacity={0.65} sizeAttenuation />
+      <pointsMaterial size={0.1} map={circleTexture} vertexColors transparent opacity={0.65} sizeAttenuation depthWrite={false} />
     </points>
   );
 }
