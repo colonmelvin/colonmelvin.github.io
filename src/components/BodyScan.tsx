@@ -7,10 +7,10 @@ const BODY_PARTS = [
   { name: 'head', label: 'Head & face', y: 8 },
   { name: 'neck', label: 'Neck & shoulders', y: 18 },
   { name: 'chest', label: 'Chest & heart', y: 30 },
-  { name: 'stomach', label: 'Stomach & core', y: 45 },
-  { name: 'hips', label: 'Hips & lower back', y: 58 },
+  { name: 'stomach', label: 'Stomach & core', y: 42 },
+  { name: 'hips', label: 'Hips & lower back', y: 54 },
   { name: 'legs', label: 'Legs & thighs', y: 72 },
-  { name: 'feet', label: 'Feet & toes', y: 88 },
+  { name: 'feet', label: 'Feet & toes', y: 90 },
 ];
 
 export default function BodyScan({ onClose }: { onClose: () => void }) {
@@ -50,35 +50,29 @@ export default function BodyScan({ onClose }: { onClose: () => void }) {
       <h3 className="text-xl font-light text-emerald-100/80 mb-2">body scan</h3>
       <p className="text-sm text-emerald-200/40 mb-6">release tension, return to your body</p>
 
-      <div className="flex gap-6 items-center justify-center mb-6">
-        {/* Body outline */}
-        <div className="relative w-16 h-48">
-          <svg viewBox="0 0 40 120" className="w-full h-full">
-            {/* Simple body silhouette */}
-            <ellipse cx="20" cy="10" rx="8" ry="9" fill="none" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
-            <line x1="20" y1="19" x2="20" y2="55" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
-            <line x1="20" y1="25" x2="5" y2="45" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
-            <line x1="20" y1="25" x2="35" y2="45" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
-            <line x1="20" y1="55" x2="10" y2="95" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
-            <line x1="20" y1="55" x2="30" y2="95" stroke="rgba(52,211,153,0.2)" strokeWidth="1" />
-            
-            {/* Highlight current area */}
-            {part && (
-              <motion.circle
-                cx="20"
-                cy={part.y}
-                r="6"
-                fill="rgba(52,211,153,0.3)"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0.8, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            )}
-          </svg>
+      <div className="flex gap-8 items-start justify-center mb-6">
+        {/* Vertical body part list */}
+        <div className="flex flex-col gap-1">
+          {BODY_PARTS.map((bp, i) => (
+            <motion.div
+              key={bp.name}
+              className={`text-sm py-1.5 px-3 rounded-full transition-all ${
+                i === currentPart
+                  ? 'text-emerald-300 bg-emerald-500/20'
+                  : i < currentPart
+                  ? 'text-emerald-500/40'
+                  : 'text-emerald-200/20'
+              }`}
+              animate={i === currentPart ? { opacity: [0.7, 1, 0.7] } : {}}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              {bp.label}
+            </motion.div>
+          ))}
         </div>
 
-        {/* Current focus */}
-        <div className="flex-1 text-left h-32 flex items-center">
+        {/* Instructions / status */}
+        <div className="flex-1 text-left h-48 flex items-center">
           {currentPart === -1 && !isComplete && (
             <p className="text-emerald-200/40 text-sm">
               Slowly scan from head to toe.<br />
@@ -92,23 +86,11 @@ export default function BodyScan({ onClose }: { onClose: () => void }) {
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
             >
-              <span className="text-xl font-light text-emerald-300/90 block mb-2">
-                {part.label}
-              </span>
-              <p className="text-sm text-emerald-200/40">
+              <p className="text-sm text-emerald-200/50">
                 Breathe into this area.<br />
-                Notice any tension. Let it soften.
+                Notice any tension.<br />
+                Let it soften.
               </p>
-              <div className="flex gap-1 mt-3">
-                {BODY_PARTS.map((_, i) => (
-                  <div
-                    key={i}
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      i <= currentPart ? 'bg-emerald-500/60' : 'bg-emerald-900/40'
-                    }`}
-                  />
-                ))}
-              </div>
             </motion.div>
           )}
 
@@ -118,7 +100,7 @@ export default function BodyScan({ onClose }: { onClose: () => void }) {
               animate={{ opacity: 1 }}
             >
               <span className="text-lg font-light text-emerald-100/70 block mb-1">
-                whole body awareness
+                whole body
               </span>
               <p className="text-sm text-emerald-200/40">
                 Feel your entire body as one.<br />

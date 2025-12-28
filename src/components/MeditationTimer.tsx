@@ -20,13 +20,13 @@ const PRESETS = [
 ];
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
-  { id: 'timer', label: 'timer', icon: '◷' },
-  { id: 'sigh', label: 'sigh', icon: '🌬' },
-  { id: 'box', label: 'box', icon: '◻' },
-  { id: 'stop', label: 'stop', icon: '✋' },
-  { id: 'grounding', label: '54321', icon: '👁' },
-  { id: 'body', label: 'scan', icon: '🧘' },
-  { id: 'cold', label: 'cold', icon: '❄' },
+  { id: 'timer', label: 'timer', icon: '○' },
+  { id: 'sigh', label: 'sigh', icon: '~' },
+  { id: 'box', label: 'box', icon: '□' },
+  { id: 'stop', label: 'stop', icon: '·' },
+  { id: 'grounding', label: '54321', icon: '5' },
+  { id: 'body', label: 'scan', icon: '|' },
+  { id: 'cold', label: 'cold', icon: '*' },
 ];
 
 export default function MeditationTimer() {
@@ -108,18 +108,34 @@ export default function MeditationTimer() {
         <source src="/audio/bell.mp3" type="audio/mpeg" />
       </audio>
 
-      {/* Floating trigger */}
+      {/* Floating trigger - breathing circle */}
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full flex items-center gap-2 backdrop-blur-sm border border-emerald-800/30 hover:border-emerald-600/40 transition-colors"
-        style={{ background: 'rgba(4, 7, 4, 0.7)' }}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
+        className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-3 group"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5 }}
       >
-        <span className="text-emerald-200/60 text-sm tracking-wide font-light">grounding techniques</span>
+        <motion.div
+          className="w-12 h-12 rounded-full border border-emerald-500/30 flex items-center justify-center backdrop-blur-sm group-hover:border-emerald-400/50 transition-colors"
+          style={{ background: 'rgba(4, 7, 4, 0.6)' }}
+          animate={{ 
+            scale: [1, 1.08, 1],
+            boxShadow: [
+              '0 0 0 0 rgba(52, 211, 153, 0)',
+              '0 0 20px 2px rgba(52, 211, 153, 0.15)',
+              '0 0 0 0 rgba(52, 211, 153, 0)'
+            ]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <motion.div 
+            className="w-2 h-2 rounded-full bg-emerald-400/60"
+            animate={{ scale: [1, 1.3, 1] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </motion.div>
+        <span className="text-emerald-200/40 text-xs tracking-widest uppercase group-hover:text-emerald-200/60 transition-colors">ground</span>
       </motion.button>
 
       {/* Modal */}
@@ -155,7 +171,7 @@ export default function MeditationTimer() {
                         : 'text-emerald-200/30 hover:text-emerald-200/50'
                     } ${isRunning && tab.id !== 'timer' ? 'opacity-30 cursor-not-allowed' : ''}`}
                   >
-                    <span className="block text-base mb-0.5">{tab.icon}</span>
+                    <span className="block text-lg font-light mb-1 opacity-60">{tab.icon}</span>
                     {tab.label}
                   </button>
                 ))}

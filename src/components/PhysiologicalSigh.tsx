@@ -81,9 +81,6 @@ export default function PhysiologicalSigh({ onClose }: { onClose: () => void }) 
         />
         
         <div className="relative z-10 text-center">
-          {phase === 'ready' && (
-            <span className="text-emerald-200/40 text-sm">ready</span>
-          )}
           {phase !== 'ready' && phase !== 'complete' && (
             <motion.span
               key={phase}
@@ -95,7 +92,7 @@ export default function PhysiologicalSigh({ onClose }: { onClose: () => void }) 
             </motion.span>
           )}
           {phase === 'complete' && (
-            <span className="text-emerald-400/70 text-sm">reset</span>
+            <span className="text-emerald-400/70 text-sm">done</span>
           )}
         </div>
       </div>
