@@ -1,11 +1,22 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function BlobReveal() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const blobRef = useRef({ x: -1000, y: -1000, vx: 0, vy: 0 });
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      setVisible(scrollY < window.innerHeight * 0.5);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -75,10 +86,10 @@ export default function BlobReveal() {
         const angle = (i / points) * Math.PI * 2;
         
         // Independent pulsing lobes that grow/shrink
-        const lobe1 = Math.sin(time * 2.5) * Math.sin(angle * 2 + 0.5) * 40;
-        const lobe2 = Math.sin(time * 3.2 + 1) * Math.sin(angle * 3 + 2) * 30;
-        const lobe3 = Math.sin(time * 4.1 + 2) * Math.cos(angle * 2.5) * 25;
-        const lobe4 = Math.sin(time * 2.8 + 0.7) * Math.cos(angle * 4 + 1) * 15;
+        const lobe1 = Math.sin(time * 1.5) * Math.sin(angle * 2 + 0.5) * 40;
+        const lobe2 = Math.sin(time * 2.0 + 1) * Math.sin(angle * 3 + 2) * 30;
+        const lobe3 = Math.sin(time * 2.5 + 2) * Math.cos(angle * 2.5) * 25;
+        const lobe4 = Math.sin(time * 1.8 + 0.7) * Math.cos(angle * 4 + 1) * 15;
         
         const r = BASE_SIZE + lobe1 + lobe2 + lobe3 + lobe4;
         const x = cx + Math.cos(angle) * r;
@@ -115,7 +126,7 @@ export default function BlobReveal() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-30 pointer-events-none"
+      className={`fixed inset-0 z-30 pointer-events-none transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}
     />
   );
 }

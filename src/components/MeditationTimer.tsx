@@ -125,7 +125,7 @@ export default function MeditationTimer() {
         <source src="/audio/ambient.mp3" type="audio/mpeg" />
       </audio>
 
-      {/* Floating trigger - breathing circle */}
+      {/* Floating trigger - breathing circle with roots */}
       <motion.button
         onClick={() => setIsOpen(true)}
         className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-3 group"
@@ -133,6 +133,16 @@ export default function MeditationTimer() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5 }}
       >
+        {/* Subtle roots beneath */}
+        <svg className="absolute top-10 left-1/2 -translate-x-1/2 w-24 h-16 opacity-20 group-hover:opacity-30 transition-opacity duration-1000" viewBox="0 0 96 64">
+          <g stroke="rgb(167, 243, 208)" fill="none" strokeWidth="0.5">
+            <path d="M48 0 Q48 20, 42 35 Q38 45, 32 55" className="animate-[grow_8s_ease-in-out_infinite]" />
+            <path d="M48 0 Q48 25, 54 40 Q58 50, 64 58" className="animate-[grow_8s_ease-in-out_infinite_0.5s]" />
+            <path d="M48 0 Q47 15, 44 25 Q40 35, 28 45" className="animate-[grow_8s_ease-in-out_infinite_1s]" />
+            <path d="M48 0 Q49 18, 52 30 Q56 42, 68 50" className="animate-[grow_8s_ease-in-out_infinite_1.5s]" />
+            <path d="M48 0 Q48 22, 48 38 Q48 50, 48 60" className="animate-[grow_8s_ease-in-out_infinite_0.3s]" />
+          </g>
+        </svg>
         <motion.div
           className="w-12 h-12 rounded-full border border-emerald-500/30 flex items-center justify-center backdrop-blur-sm group-hover:border-emerald-400/50 transition-colors"
           style={{ background: 'rgba(4, 7, 4, 0.6)' }}

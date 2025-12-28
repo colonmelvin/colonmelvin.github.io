@@ -76,3 +76,14 @@ html.lenis, html.lenis body {
   clip-path: inset(0 0 0 0);
   transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
 }
+
+/* Root growth animation */
+@keyframes grow {
+  0%, 100% { stroke-dashoffset: 60; opacity: 0.15; }
+  50% { stroke-dashoffset: 0; opacity: 0.4; }
+}
+
+svg path[class*="animate-"] {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+}
