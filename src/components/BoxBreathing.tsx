@@ -17,6 +17,7 @@ export default function BoxBreathing({ onClose }: { onClose: () => void }) {
   const [currentPhase, setCurrentPhase] = useState(0);
   const [countdown, setCountdown] = useState(4);
   const [cycles, setCycles] = useState(0);
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
     if (!isRunning) return;
@@ -50,8 +51,33 @@ export default function BoxBreathing({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="text-center">
-      <h3 className="text-xl font-light text-emerald-100/80 mb-2">box breathing</h3>
-      <p className="text-sm text-emerald-200/40 mb-8">4-4-4-4 rhythm to calm your nervous system</p>
+      <div className="flex items-center justify-center gap-2 mb-2">
+        <h3 className="text-xl font-light text-emerald-100/80">box breathing</h3>
+        <button 
+          onClick={() => setShowInfo(!showInfo)}
+          className="w-5 h-5 rounded-full border border-emerald-500/30 text-emerald-400/60 text-xs hover:border-emerald-400/60 transition-colors"
+        >
+          ?
+        </button>
+      </div>
+      
+      {showInfo ? (
+        <div className="text-sm text-emerald-200/50 mb-6 max-w-xs mx-auto text-left">
+          <p className="mb-2">
+            Used by Navy SEALs to stay calm under pressure. Equal breathing phases activate the parasympathetic nervous system, lowering heart rate and reducing stress hormones.
+          </p>
+          <a 
+            href="https://www.medicinenet.com/why_do_navy_seals_use_box_breathing/article.htm" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-emerald-400/70 hover:text-emerald-400 underline"
+          >
+            Learn more — MedicineNet
+          </a>
+        </div>
+      ) : (
+        <p className="text-sm text-emerald-200/40 mb-8">4-4-4-4 rhythm to calm your nervous system</p>
+      )}
 
       {/* Breathing visualization */}
       <div className="relative w-48 h-48 mx-auto mb-8">

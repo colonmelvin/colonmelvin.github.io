@@ -17,6 +17,7 @@ export default function BodyScan({ onClose }: { onClose: () => void }) {
   const [currentPart, setCurrentPart] = useState(-1);
   const [isComplete, setIsComplete] = useState(false);
   const [autoProgress, setAutoProgress] = useState(true);
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
     if (!autoProgress || currentPart < 0 || currentPart >= BODY_PARTS.length) return;
@@ -47,8 +48,33 @@ export default function BodyScan({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="text-center">
-      <h3 className="text-xl font-light text-emerald-100/80 mb-2">body scan</h3>
-      <p className="text-sm text-emerald-200/40 mb-6">release tension, return to your body</p>
+      <div className="flex items-center justify-center gap-2 mb-2">
+        <h3 className="text-xl font-light text-emerald-100/80">body scan</h3>
+        <button 
+          onClick={() => setShowInfo(!showInfo)}
+          className="w-5 h-5 rounded-full border border-emerald-500/30 text-emerald-400/60 text-xs hover:border-emerald-400/60 transition-colors"
+        >
+          ?
+        </button>
+      </div>
+      
+      {showInfo ? (
+        <div className="text-sm text-emerald-200/50 mb-6 max-w-xs mx-auto text-left">
+          <p className="mb-2">
+            Systematically focusing attention on body parts activates the parasympathetic nervous system, reducing muscle tension and shifting from stress to relaxation mode.
+          </p>
+          <a 
+            href="https://www.happiness.com/magazine/health-body/body-scan-meditation-script-benefits/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-emerald-400/70 hover:text-emerald-400 underline"
+          >
+            Learn more — Happiness.com
+          </a>
+        </div>
+      ) : (
+        <p className="text-sm text-emerald-200/40 mb-6">release tension, return to your body</p>
+      )}
 
       <div className="flex gap-8 items-start justify-center mb-6">
         {/* Vertical body part list */}

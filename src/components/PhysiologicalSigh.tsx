@@ -9,6 +9,7 @@ export default function PhysiologicalSigh({ onClose }: { onClose: () => void }) 
   const [phase, setPhase] = useState<Phase>('ready');
   const [breathCount, setBreathCount] = useState(0);
   const [scale, setScale] = useState(1);
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
     if (phase === 'ready' || phase === 'complete') return;
@@ -64,8 +65,37 @@ export default function PhysiologicalSigh({ onClose }: { onClose: () => void }) 
 
   return (
     <div className="text-center">
-      <h3 className="text-xl font-light text-emerald-100/80 mb-2">physiological sigh</h3>
-      <p className="text-sm text-emerald-200/40 mb-8">fastest way to calm - double inhale, long exhale</p>
+      <div className="flex items-center justify-center gap-2 mb-2">
+        <h3 className="text-xl font-light text-emerald-100/80">physiological sigh</h3>
+        <button 
+          onClick={() => setShowInfo(!showInfo)}
+          className="w-5 h-5 rounded-full border border-emerald-500/30 text-emerald-400/60 text-xs hover:border-emerald-400/60 transition-colors"
+        >
+          ?
+        </button>
+      </div>
+      
+      {showInfo ? (
+        <motion.div 
+          className="text-sm text-emerald-200/50 mb-6 max-w-xs mx-auto text-left"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+        >
+          <p className="mb-2">
+            The double inhale reinflates collapsed lung sacs (alveoli), maximizing oxygen intake. The extended exhale activates the parasympathetic nervous system via the vagus nerve, rapidly lowering heart rate and stress.
+          </p>
+          <a 
+            href="https://www.hubermanlab.com/newsletter/breathwork-protocols-for-health-focus-stress" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-emerald-400/70 hover:text-emerald-400 underline"
+          >
+            Learn more — Huberman Lab
+          </a>
+        </motion.div>
+      ) : (
+        <p className="text-sm text-emerald-200/40 mb-8">fastest way to calm — double inhale, long exhale</p>
+      )}
 
       {/* Breathing circle */}
       <div className="relative w-48 h-48 mx-auto mb-8 flex items-center justify-center">

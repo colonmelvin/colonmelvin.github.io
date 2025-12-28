@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 const TIPS = [
@@ -10,10 +11,37 @@ const TIPS = [
 ];
 
 export default function ColdExposure({ onClose }: { onClose: () => void }) {
+  const [showInfo, setShowInfo] = useState(false);
+  
   return (
     <div className="text-center">
-      <h3 className="text-xl font-light text-emerald-100/80 mb-2">cold exposure</h3>
-      <p className="text-sm text-emerald-200/40 mb-6">activate your vagus nerve, build resilience</p>
+      <div className="flex items-center justify-center gap-2 mb-2">
+        <h3 className="text-xl font-light text-emerald-100/80">cold exposure</h3>
+        <button 
+          onClick={() => setShowInfo(!showInfo)}
+          className="w-5 h-5 rounded-full border border-emerald-500/30 text-emerald-400/60 text-xs hover:border-emerald-400/60 transition-colors"
+        >
+          ?
+        </button>
+      </div>
+      
+      {showInfo ? (
+        <div className="text-sm text-emerald-200/50 mb-6 max-w-xs mx-auto text-left">
+          <p className="mb-2">
+            Cold activates the vagus nerve and triggers the dive reflex, shifting from sympathetic (stress) to parasympathetic (calm) nervous system dominance. Regular practice builds stress resilience.
+          </p>
+          <a 
+            href="https://www.hubermanlab.com/newsletter/the-science-and-use-of-cold-exposure-for-health-and-performance" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-emerald-400/70 hover:text-emerald-400 underline"
+          >
+            Learn more — Huberman Lab
+          </a>
+        </div>
+      ) : (
+        <p className="text-sm text-emerald-200/40 mb-6">activate your vagus nerve, build resilience</p>
+      )}
 
       {/* Benefits */}
       <div className="flex justify-center gap-6 mb-8 text-xs text-emerald-200/30">

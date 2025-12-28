@@ -36,8 +36,11 @@ export default function MeditationTimer() {
   const [timeLeft, setTimeLeft] = useState(duration);
   const [isRunning, setIsRunning] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isSettling, setIsSettling] = useState(false);
+  const [ambientOn, setAmbientOn] = useState(false);
   const bellRef = useRef<HTMLAudioElement | null>(null);
+  const startBellRef = useRef<HTMLAudioElement | null>(null);
+  const ambientRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     if (!isRunning || timeLeft <= 0) return;
@@ -48,6 +51,7 @@ export default function MeditationTimer() {
           setIsRunning(false);
           setIsComplete(true);
           bellRef.current?.play();
+          ambientRef.current?.pause();
           return 0;
         }
         return t - 1;
@@ -57,24 +61,34 @@ export default function MeditationTimer() {
     return () => clearInterval(interval);
   }, [isRunning, timeLeft]);
 
-  const startTimer = useCallback(() => {
-    setTimeLeft(duration);
-    setIsRunning(true);
+  const beginSettling = useCallback(() => {
+    setIsSettling(true);
     setIsComplete(false);
-    audioRef.current?.play();
-  }, [duration]);
+    startBellRef.current?.play();
+    if (ambientOn && ambientRef.current) {
+      ambientRef.current.volume = 0.3;
+      ambientRef.current.play();
+    }
+    setTimeout(() => {
+      setIsSettling(false);
+      setTimeLeft(duration);
+      setIsRunning(true);
+    }, 8000);
+  }, [duration, ambientOn]);
 
   const stopTimer = useCallback(() => {
     setIsRunning(false);
-    audioRef.current?.pause();
+    setIsSettling(false);
+    ambientRef.current?.pause();
   }, []);
 
   const resetTimer = useCallback(() => {
     setIsRunning(false);
+    setIsSettling(false);
     setIsComplete(false);
     setTimeLeft(duration);
-    audioRef.current?.pause();
-    if (audioRef.current) audioRef.current.currentTime = 0;
+    ambientRef.current?.pause();
+    if (ambientRef.current) ambientRef.current.currentTime = 0;
   }, [duration]);
 
   const selectDuration = useCallback((minutes: number) => {
@@ -101,11 +115,14 @@ export default function MeditationTimer() {
 
   return (
     <>
-      <audio ref={audioRef} loop preload="none">
-        <source src="/audio/ambient.mp3" type="audio/mpeg" />
-      </audio>
       <audio ref={bellRef} preload="none">
         <source src="/audio/bell.mp3" type="audio/mpeg" />
+      </audio>
+      <audio ref={startBellRef} preload="none">
+        <source src="/audio/start-bell.mp3" type="audio/mpeg" />
+      </audio>
+      <audio ref={ambientRef} loop preload="none">
+        <source src="/audio/ambient.mp3" type="audio/mpeg" />
       </audio>
 
       {/* Floating trigger - breathing circle */}
@@ -159,6 +176,26 @@ export default function MeditationTimer() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
             >
+              {/* Why this works - collapsible intro */}
+              <details className="border-b border-emerald-900/30">
+                <summary className="px-4 py-3 text-xs text-emerald-200/40 cursor-pointer hover:text-emerald-200/60 transition-colors">
+                  why these techniques work
+                </summary>
+                <div className="px-4 pb-4 text-sm text-emerald-200/50">
+                  <p className="mb-2">
+                    Your nervous system has two modes: fight-or-flight (stress) and rest-and-digest (calm). These exercises activate the calming response through breath, senses, and focused attention.
+                  </p>
+                  <a 
+                    href="https://www.health.harvard.edu/staying-healthy/understanding-the-stress-response" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-emerald-400/70 hover:text-emerald-400 underline"
+                  >
+                    Learn more — Harvard Health
+                  </a>
+                </div>
+              </details>
+
               {/* Tabs - scrollable on mobile */}
               <div className="flex overflow-x-auto border-b border-emerald-900/30 scrollbar-hide">
                 {TABS.map((tab) => (
@@ -199,6 +236,36 @@ export default function MeditationTimer() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                     >
+                      {/* Settling phase */}
+                      {isSettling ? (
+                        <div className="flex flex-col items-center justify-center h-64 gap-4">
+                          <motion.p 
+                            className="text-emerald-200/60 text-center text-sm"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5, duration: 1.5 }}
+                          >
+                            settle in
+                          </motion.p>
+                          <motion.p 
+                            className="text-emerald-200/40 text-center text-sm"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 2.5, duration: 1.5 }}
+                          >
+                            shoulders relaxed, spine tall
+                          </motion.p>
+                          <motion.p 
+                            className="text-emerald-200/40 text-center text-sm"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 4.5, duration: 1.5 }}
+                          >
+                            let your eyes close if comfortable
+                          </motion.p>
+                        </div>
+                      ) : (
+                      <>
                       {/* Timer display */}
                       <div className="relative flex items-center justify-center mb-8">
                         <svg className="w-48 h-48 -rotate-90">
@@ -230,7 +297,7 @@ export default function MeditationTimer() {
                       </div>
 
                       {/* Presets */}
-                      {!isRunning && (
+                      {!isRunning && !isSettling && (
                         <div className="flex justify-center gap-2 mb-8">
                           {PRESETS.map((preset) => (
                             <button
@@ -250,15 +317,15 @@ export default function MeditationTimer() {
 
                       {/* Controls */}
                       <div className="flex justify-center gap-4">
-                        {!isRunning ? (
+                        {!isRunning && !isSettling ? (
                           <motion.button
-                            onClick={startTimer}
+                            onClick={beginSettling}
                             className="px-8 py-3 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition-colors font-light"
                             whileTap={{ scale: 0.98 }}
                           >
                             {isComplete ? 'again' : 'begin'}
                           </motion.button>
-                        ) : (
+                        ) : isRunning ? (
                           <>
                             <motion.button
                               onClick={stopTimer}
@@ -275,9 +342,21 @@ export default function MeditationTimer() {
                               reset
                             </motion.button>
                           </>
-                        )}
+                        ) : null}
                       </div>
                       <p className="text-center text-emerald-200/20 text-xs mt-6">minutes</p>
+                      
+                      {/* Ambient toggle */}
+                      {!isRunning && !isSettling && (
+                        <button
+                          onClick={() => setAmbientOn(!ambientOn)}
+                          className={`mt-4 text-xs transition-colors ${ambientOn ? 'text-emerald-400/60' : 'text-emerald-200/30 hover:text-emerald-200/50'}`}
+                        >
+                          {ambientOn ? '♪ ambient on' : '♪ ambient off'}
+                        </button>
+                      )}
+                      </>
+                      )}
                     </motion.div>
                   )}
 

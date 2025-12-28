@@ -13,6 +13,7 @@ const STEPS = [
 export default function StopTechnique({ onClose }: { onClose: () => void }) {
   const [currentStep, setCurrentStep] = useState(-1);
   const [isComplete, setIsComplete] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   const start = useCallback(() => {
     setCurrentStep(0);
@@ -37,8 +38,33 @@ export default function StopTechnique({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="text-center">
-      <h3 className="text-xl font-light text-emerald-100/80 mb-2">STOP technique</h3>
-      <p className="text-sm text-emerald-200/40 mb-8">interrupt impulsive reactions</p>
+      <div className="flex items-center justify-center gap-2 mb-2">
+        <h3 className="text-xl font-light text-emerald-100/80">STOP technique</h3>
+        <button 
+          onClick={() => setShowInfo(!showInfo)}
+          className="w-5 h-5 rounded-full border border-emerald-500/30 text-emerald-400/60 text-xs hover:border-emerald-400/60 transition-colors"
+        >
+          ?
+        </button>
+      </div>
+      
+      {showInfo ? (
+        <div className="text-sm text-emerald-200/50 mb-6 max-w-xs mx-auto text-left">
+          <p className="mb-2">
+            A DBT skill that interrupts automatic reactions by re-engaging the prefrontal cortex. The pause prevents emotional hijacking and allows for mindful decision-making.
+          </p>
+          <a 
+            href="https://manhattancbt.com/dbt-stop-skill/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-emerald-400/70 hover:text-emerald-400 underline"
+          >
+            Learn more — Manhattan CBT
+          </a>
+        </div>
+      ) : (
+        <p className="text-sm text-emerald-200/40 mb-8">interrupt impulsive reactions</p>
+      )}
 
       {/* STOP letters */}
       <div className="flex justify-center gap-1 mb-8">
