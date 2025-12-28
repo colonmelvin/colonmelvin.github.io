@@ -64,16 +64,20 @@ export default function MeditationTimer() {
   const beginSettling = useCallback(() => {
     setIsSettling(true);
     setIsComplete(false);
-    startBellRef.current?.play();
     if (ambientOn && ambientRef.current) {
       ambientRef.current.volume = 0.3;
       ambientRef.current.play();
     }
+    // Play bell after settle text finishes + 2s pause
+    setTimeout(() => {
+      startBellRef.current?.play();
+    }, 8000);
+    // Start timer after bell finishes (~4s) + 1.5s pause
     setTimeout(() => {
       setIsSettling(false);
       setTimeLeft(duration);
       setIsRunning(true);
-    }, 8000);
+    }, 21000);
   }, [duration, ambientOn]);
 
   const stopTimer = useCallback(() => {
@@ -253,7 +257,7 @@ export default function MeditationTimer() {
                             className="text-emerald-200/60 text-center text-sm"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5, duration: 1.5 }}
+                            transition={{ delay: 0.8, duration: 2 }}
                           >
                             settle in
                           </motion.p>
@@ -261,7 +265,7 @@ export default function MeditationTimer() {
                             className="text-emerald-200/40 text-center text-sm"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 2.5, duration: 1.5 }}
+                            transition={{ delay: 3, duration: 2 }}
                           >
                             shoulders relaxed, spine tall
                           </motion.p>
@@ -269,7 +273,7 @@ export default function MeditationTimer() {
                             className="text-emerald-200/40 text-center text-sm"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 4.5, duration: 1.5 }}
+                            transition={{ delay: 5.5, duration: 2 }}
                           >
                             let your eyes close if comfortable
                           </motion.p>
