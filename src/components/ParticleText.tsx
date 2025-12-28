@@ -59,23 +59,20 @@ export default function ParticleText({ text = 'breathe' }: { text?: string }) {
     const imageData = offCtx.getImageData(0, 0, dimensions.width, dimensions.height);
     const pixels = imageData.data;
     const particles: Particle[] = [];
-    const gap = 4; // Sample every 4th pixel
+    const gap = 4;
 
     for (let y = 0; y < dimensions.height; y += gap) {
       for (let x = 0; x < dimensions.width; x += gap) {
         const i = (y * dimensions.width + x) * 4;
         if (pixels[i + 3] > 128) {
-          // Start from random positions (chaos)
-          const startX = Math.random() * dimensions.width;
-          const startY = Math.random() * dimensions.height;
-          
+          // Start off-screen left, scattered vertically
           particles.push({
-            x: startX,
-            y: startY,
+            x: -50 + (Math.random() - 0.5) * 30,
+            y: y + (Math.random() - 0.5) * 100,
             targetX: x,
             targetY: y,
-            vx: (Math.random() - 0.5) * 4,
-            vy: (Math.random() - 0.5) * 4,
+            vx: 0,
+            vy: 0,
             size: Math.random() * 1.5 + 0.8,
             alpha: Math.random() * 0.3 + 0.15,
             settled: false,
@@ -89,32 +86,31 @@ export default function ParticleText({ text = 'breathe' }: { text?: string }) {
 
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTimeRef.current;
-      const progress = Math.min(elapsed / 12000, 1); // 12 seconds to settle (slower)
+      const delay = 3000; // Wait 3s for trees to start loading
+      const adjustedElapsed = Math.max(0, elapsed - delay);
+      const progress = Math.min(adjustedElapsed / 8000, 1); // 8 seconds to form
       
-      ctx.fillStyle = 'rgba(4, 7, 4, 0.05)'; // Slower fade for smoother trails
-      ctx.fillRect(0, 0, dimensions.width, dimensions.height);
+      ctx.clearRect(0, 0, dimensions.width, dimensions.height); // Clear fully to avoid smear
 
-      const easeProgress = 1 - Math.pow(1 - progress, 3); // Gentler ease
+      if (progress === 0) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
 
       for (const p of particlesRef.current) {
         if (progress < 1) {
-          // Chaotic phase - particles drift and slowly move toward target
-          if (progress < 0.35) {
-            // Longer gentle chaos
-            p.x += p.vx * 0.4;
-            p.y += p.vy * 0.4;
-            p.vx *= 0.995;
-            p.vy *= 0.995;
-            p.vx += (Math.random() - 0.5) * 0.15;
-            p.vy += (Math.random() - 0.5) * 0.15;
-          } else {
-            // Gradually move toward target
-            const attraction = (easeProgress - 0.25) * 0.8;
-            p.x += (p.targetX - p.x) * attraction * 0.025;
-            p.y += (p.targetY - p.y) * attraction * 0.025;
-            // Add subtle drift
-            p.x += Math.sin(currentTime * 0.001 + p.targetX * 0.01) * (1 - easeProgress) * 1.2;
-            p.y += Math.cos(currentTime * 0.001 + p.targetY * 0.01) * (1 - easeProgress) * 1.2;
+          // Breath wave moves left to right - particles settle when wave reaches them
+          const waveX = progress * (dimensions.width + 200) - 100;
+          const distFromWave = p.targetX - waveX;
+          
+          if (distFromWave < 0) {
+            // Wave has passed - settle into place
+            p.x += (p.targetX - p.x) * 0.08;
+            p.y += (p.targetY - p.y) * 0.08;
+          } else if (distFromWave < 150) {
+            // In the wave - being blown along
+            p.x += (waveX - p.x) * 0.03 + 3;
+            p.y += (p.targetY - p.y) * 0.02 + (Math.random() - 0.5) * 2;
           }
         } else {
           // Settled - gentle breathing motion

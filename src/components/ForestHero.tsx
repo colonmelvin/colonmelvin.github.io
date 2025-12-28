@@ -17,7 +17,7 @@ export default function ForestHero() {
         subtitleRef.current.style.opacity = '1';
         subtitleRef.current.style.transform = 'translateY(0)';
       }
-    }, 13000);
+    }, 12000);
 
     return () => clearTimeout(timer);
   }, []);
