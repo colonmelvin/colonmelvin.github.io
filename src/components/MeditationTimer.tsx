@@ -132,11 +132,20 @@ export default function MeditationTimer() {
       {/* Floating trigger - breathing circle with roots */}
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-3 group"
+        className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-3 group cursor-pointer"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5 }}
       >
+        {/* One-time hint */}
+        <motion.span
+          className="absolute -top-14 text-emerald-200/40 text-sm tracking-widest font-light"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 1, 1, 0] }}
+          transition={{ delay: 12, duration: 12, times: [0, 0.08, 0.85, 1] }}
+        >
+          <span className="font-medium text-emerald-300/60">tap</span> to begin
+        </motion.span>
         {/* Subtle roots beneath */}
         <svg className="absolute top-10 left-1/2 -translate-x-1/2 w-24 h-16 opacity-20 group-hover:opacity-30 transition-opacity duration-1000" viewBox="0 0 96 64">
           <g stroke="rgb(167, 243, 208)" fill="none" strokeWidth="0.5">
