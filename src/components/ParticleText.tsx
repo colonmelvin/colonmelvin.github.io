@@ -142,7 +142,7 @@ export default function ParticleText({ text = 'breathe' }: { text?: string }) {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 z-10 pointer-events-none"
+      className="absolute inset-0 z-40 pointer-events-none"
       style={{ mixBlendMode: 'screen' }}
     />
   );

@@ -27,7 +27,7 @@ export default function ForestHero() {
       <ForestScene />
       <ParticleText text="breathe" />
       
-      <div className="relative z-20 text-center pointer-events-none">
+      <div className="relative z-40 text-center pointer-events-none">
         <p 
           ref={subtitleRef}
           className="mt-64 text-base md:text-lg tracking-[0.4em] uppercase font-light transition-all duration-1000"
